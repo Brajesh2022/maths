@@ -309,9 +309,16 @@
     const highestCompleted = completedIds.length > 0 ? Math.max(...completedIds) : 0;
 
     EXERCISES_DATA.forEach(ex => {
-      // Filter check
-      if (state.tierFilter !== 'all' && ex.tier !== state.tierFilter) {
-        return;
+      // Filter check (all or range e.g. 1-5, 6-10 or tier name)
+      if (state.tierFilter !== 'all') {
+        const parts = state.tierFilter.split('-');
+        if (parts.length === 2) {
+          const start = parseInt(parts[0], 10);
+          const end = parseInt(parts[1], 10);
+          if (ex.id < start || ex.id > end) return;
+        } else if (ex.tier !== state.tierFilter) {
+          return;
+        }
       }
 
       const isCompleted = !!state.completedMap[ex.id];
@@ -348,7 +355,7 @@
             </div>
           </div>
           <button class="btn btn-secondary btn-sm ex-card-btn" onclick="App.startExercise(${ex.id})">
-            🔄 Review / Repeat
+            🔄 Review / Retake
           </button>
         `;
       } else if (isNextToSolve) {
@@ -356,10 +363,10 @@
           <div class="ex-card-stats">
             <div class="ex-stat-item">
               <span>Questions</span>
-              <span>15 Curated</span>
+              <span>15 (5 Sec)</span>
             </div>
             <div class="ex-stat-item">
-              <span>Estimated</span>
+              <span>Target</span>
               <span>~${ex.estimatedMinutes || 15}m</span>
             </div>
             <div class="ex-stat-item">
@@ -368,7 +375,7 @@
             </div>
           </div>
           <button class="btn btn-primary btn-sm ex-card-btn" onclick="App.startExercise(${ex.id})">
-            ▶ Start Exercise
+            ▶ Start Day ${String(ex.id).padStart(2, '0')}
           </button>
         `;
       } else {
@@ -389,14 +396,17 @@
         `;
       }
 
+      const cleanTitle = ex.title.replace(/^Day \d+:\s*/, '');
+      const subtitleText = ex.subtitle || '5 Sections: Mental • Fractions • Powers • Algebra • Scientific';
+
       card.innerHTML = `
         <div>
           <div class="ex-card-top">
-            <span class="ex-id-pill">Exercise ${String(ex.id).padStart(2, '0')}</span>
+            <span class="ex-id-pill">Day ${String(ex.id).padStart(2, '0')}</span>
             <span class="tier-badge ${tierClass}">${ex.tier}</span>
           </div>
-          <h4 class="ex-card-title">${ex.title.split(': ')[1] || ex.title}</h4>
-          <p class="ex-card-sub">${ex.subtitle}</p>
+          <h4 class="ex-card-title">${cleanTitle}</h4>
+          <p class="ex-card-sub">${subtitleText}</p>
         </div>
         ${statusHtml}
       `;
@@ -516,15 +526,20 @@
     if (!q) return;
 
     // Update Question Counter & Progress
-    document.getElementById('arena-q-counter').textContent = `Question ${index + 1} of 15`;
+    const secNum = Math.floor(index / 3) + 1;
+    const secQNum = (index % 3) + 1;
+    document.getElementById('arena-q-counter').textContent = `Question ${index + 1} of 15 (Sec ${secNum} • Q ${secQNum}/3)`;
     document.getElementById('arena-progress-fill').style.width = `${((index + 1) / 15) * 100}%`;
 
     // Section Pill
     const secPill = document.getElementById('arena-section-pill');
-    let secLabel = 'Section 1 — Mental Arithmetic';
-    if (q.section === 'algebra') secLabel = 'Section 2 — Algebra';
-    else if (q.section === 'physics') secLabel = 'Section 3 — Physics Calculations';
-    secPill.textContent = secLabel;
+    secPill.textContent = `Section ${secNum} — ${q.sectionName}`;
+
+    // Arena Day headers
+    const exNumEl = document.getElementById('arena-ex-number');
+    if (exNumEl) exNumEl.textContent = `Day ${String(state.activeExercise.id).padStart(2, '0')}`;
+    const exTitleEl = document.getElementById('arena-ex-title');
+    if (exTitleEl) exTitleEl.textContent = state.activeExercise.title.replace(/^Day \d+:\s*/, '');
 
     // Question Type Label
     document.getElementById('arena-q-type-badge').textContent = q.type === 'mcq' ? 'MCQ (4 Options)' : 'Numeric Calculation';
@@ -555,6 +570,7 @@
 
     // Check if question already answered
     const alreadyAnswered = state.sessionData.answers[index] !== undefined;
+    const isLastQ = index === 14;
 
     if (q.type === 'numeric') {
       formNumeric.style.display = 'flex';
@@ -563,13 +579,15 @@
       if (alreadyAnswered) {
         inputNumeric.value = state.sessionData.answers[index];
         inputNumeric.disabled = true;
-        btnSubmitNumeric.style.display = 'none';
+        btnSubmitNumeric.innerHTML = isLastQ ? 'Finish Exercise 🎉 <span class="kbd-hint">↵ Enter</span>' : 'Next Question → <span class="kbd-hint">↵ Enter</span>';
+        btnSubmitNumeric.style.display = 'flex';
       } else {
         inputNumeric.value = '';
         inputNumeric.disabled = false;
+        btnSubmitNumeric.innerHTML = 'Check Answer <span class="kbd-hint">↵ Enter</span>';
         btnSubmitNumeric.style.display = 'flex';
         // Auto-focus input
-        setTimeout(() => inputNumeric.focus(), 50);
+        setTimeout(() => inputNumeric.focus(), 30);
       }
     } else {
       // MCQ
@@ -811,10 +829,13 @@
     // Show immediate feedback & explanation
     showQuestionExplanation(q, state.currentQIndex);
 
-    // Disable input
+    // Disable input and transform button to Next Question
     if (q.type === 'numeric') {
       document.getElementById('input-numeric-answer').disabled = true;
-      document.getElementById('btn-submit-numeric').style.display = 'none';
+      const isLastQ = state.currentQIndex === 14;
+      const btnSubmit = document.getElementById('btn-submit-numeric');
+      btnSubmit.innerHTML = isLastQ ? 'Finish Exercise 🎉 <span class="kbd-hint">↵ Enter</span>' : 'Next Question → <span class="kbd-hint">↵ Enter</span>';
+      btnSubmit.style.display = 'flex';
     } else {
       document.getElementById('btn-submit-mcq').style.display = 'none';
     }
@@ -1047,9 +1068,13 @@
     const correctStatus = state.sessionData.correctStatus;
 
     let score = 0;
-    let secMental = 0;
-    let secAlgebra = 0;
-    let secPhysics = 0;
+    let secScores = {
+      mental: 0,
+      fractions: 0,
+      powers: 0,
+      algebra: 0,
+      scientific: 0
+    };
 
     let fastestQ = { index: 0, time: 9999 };
     let slowestQ = { index: 0, time: -1 };
@@ -1062,9 +1087,9 @@
 
       if (isCorrect) {
         score++;
-        if (q.section === 'mental') secMental++;
-        else if (q.section === 'algebra') secAlgebra++;
-        else if (q.section === 'physics') secPhysics++;
+        if (secScores[q.section] !== undefined) {
+          secScores[q.section]++;
+        }
       } else {
         incorrectQuestions.push({ q, index: idx, userAns: answers[idx], time });
       }
@@ -1088,11 +1113,7 @@
       accuracy: accuracy,
       totalTimeSecs: totalTimeSecs,
       avgTimePerQ: avgTimePerQ,
-      sectionScores: {
-        mental: secMental,
-        algebra: secAlgebra,
-        physics: secPhysics
-      },
+      sectionScores: secScores,
       questionTimings: timings,
       completedAt: new Date().toISOString()
     };
@@ -1101,22 +1122,27 @@
     clearActiveSession();
 
     // Populate Results Screen
-    document.getElementById('results-ex-title').textContent = `Exercise ${String(ex.id).padStart(2, '0')} Complete`;
+    document.getElementById('results-ex-title').textContent = `Day ${String(ex.id).padStart(2, '0')} Complete`;
     document.getElementById('results-ex-date').textContent = `Completed on ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
     document.getElementById('results-score').textContent = `${score} / 15`;
     document.getElementById('results-accuracy').textContent = `${accuracy}% Accuracy`;
     document.getElementById('results-total-time').textContent = formatTimeMMSS(totalTimeSecs);
     document.getElementById('results-avg-time').textContent = `${avgTimePerQ}s`;
 
-    // Section Performance
-    document.getElementById('results-sec-mental').textContent = `${secMental} / 5`;
-    document.getElementById('bar-sec-mental').style.width = `${(secMental / 5) * 100}%`;
+    // 5 Section Performance (each out of 3)
+    const updateSecUI = (secId) => {
+      const val = secScores[secId] || 0;
+      const scoreEl = document.getElementById(`results-sec-${secId}`);
+      const barEl = document.getElementById(`bar-sec-${secId}`);
+      if (scoreEl) scoreEl.textContent = `${val} / 3`;
+      if (barEl) barEl.style.width = `${(val / 3) * 100}%`;
+    };
 
-    document.getElementById('results-sec-algebra').textContent = `${secAlgebra} / 5`;
-    document.getElementById('bar-sec-algebra').style.width = `${(secAlgebra / 5) * 100}%`;
-
-    document.getElementById('results-sec-physics').textContent = `${secPhysics} / 5`;
-    document.getElementById('bar-sec-physics').style.width = `${(secPhysics / 5) * 100}%`;
+    updateSecUI('mental');
+    updateSecUI('fractions');
+    updateSecUI('powers');
+    updateSecUI('algebra');
+    updateSecUI('scientific');
 
     // Fastest / Slowest Highlights
     document.getElementById('results-fastest-q').textContent = `Question ${fastestQ.index + 1} (${fastestQ.time}s)`;
@@ -1273,8 +1299,8 @@
       chartTitle.textContent = 'Questions Answered Correctly';
       chartSubtitle.textContent = 'Max: 15 Questions';
     } else if (metric === 'sections') {
-      chartTitle.textContent = 'Section-wise Accuracy Breakdown';
-      chartSubtitle.textContent = 'Mental vs Algebra vs Physics';
+      chartTitle.textContent = 'Section-wise Performance Breakdown';
+      chartSubtitle.textContent = '5 Sections: Mental • Fractions • Powers • Algebra • Scientific';
     }
 
     // Determine Y range
@@ -1297,8 +1323,8 @@
       maxY = 15;
       yLabels = [0, 4, 8, 12, 15];
     } else if (metric === 'sections') {
-      maxY = 5;
-      yLabels = [0, 1, 2, 3, 4, 5];
+      maxY = 3;
+      yLabels = ['0', '1', '2', '3'];
     }
 
     // Draw Grid Lines & Y Axis Labels
@@ -1340,15 +1366,19 @@
 
     // Draw Metric Data Points & Curves
     if (metric === 'sections') {
-      // 3 Curves: Mental (blue), Algebra (purple), Physics (emerald)
+      // 5 Curves: Mental (blue), Fractions (emerald), Powers (amber), Algebra (purple), Scientific (pink)
       drawSeries(ctx, completedIds, id => state.completedMap[id].sectionScores?.mental || 0, '#3b82f6', getX, getY);
+      drawSeries(ctx, completedIds, id => state.completedMap[id].sectionScores?.fractions || 0, '#10b981', getX, getY);
+      drawSeries(ctx, completedIds, id => state.completedMap[id].sectionScores?.powers || 0, '#f59e0b', getX, getY);
       drawSeries(ctx, completedIds, id => state.completedMap[id].sectionScores?.algebra || 0, '#8b5cf6', getX, getY);
-      drawSeries(ctx, completedIds, id => state.completedMap[id].sectionScores?.physics || 0, '#10b981', getX, getY);
+      drawSeries(ctx, completedIds, id => state.completedMap[id].sectionScores?.scientific || 0, '#ec4899', getX, getY);
 
       legendEl.innerHTML = `
-        <div class="legend-item"><span class="legend-color-box" style="background: #3b82f6;"></span> Mental (0-5)</div>
-        <div class="legend-item"><span class="legend-color-box" style="background: #8b5cf6;"></span> Algebra (0-5)</div>
-        <div class="legend-item"><span class="legend-color-box" style="background: #10b981;"></span> Physics (0-5)</div>
+        <div class="legend-item"><span class="legend-color-box" style="background: #3b82f6;"></span> Mental (0-3)</div>
+        <div class="legend-item"><span class="legend-color-box" style="background: #10b981;"></span> Fractions (0-3)</div>
+        <div class="legend-item"><span class="legend-color-box" style="background: #f59e0b;"></span> Powers (0-3)</div>
+        <div class="legend-item"><span class="legend-color-box" style="background: #8b5cf6;"></span> Algebra (0-3)</div>
+        <div class="legend-item"><span class="legend-color-box" style="background: #ec4899;"></span> Scientific (0-3)</div>
       `;
     } else {
       let extractor = id => state.completedMap[id].totalTimeSecs / 60;
@@ -1455,10 +1485,16 @@
     });
 
     // Update counts
-    document.getElementById('count-mistakes-all').textContent = state.mistakesList.length;
-    document.getElementById('count-mistakes-mental').textContent = state.mistakesList.filter(m => m.section === 'mental').length;
-    document.getElementById('count-mistakes-algebra').textContent = state.mistakesList.filter(m => m.section === 'algebra').length;
-    document.getElementById('count-mistakes-physics').textContent = state.mistakesList.filter(m => m.section === 'physics').length;
+    const setSafeCount = (id, count) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = count;
+    };
+    setSafeCount('count-mistakes-all', state.mistakesList.length);
+    setSafeCount('count-mistakes-mental', state.mistakesList.filter(m => m.section === 'mental').length);
+    setSafeCount('count-mistakes-fractions', state.mistakesList.filter(m => m.section === 'fractions').length);
+    setSafeCount('count-mistakes-powers', state.mistakesList.filter(m => m.section === 'powers').length);
+    setSafeCount('count-mistakes-algebra', state.mistakesList.filter(m => m.section === 'algebra').length);
+    setSafeCount('count-mistakes-scientific', state.mistakesList.filter(m => m.section === 'scientific').length);
 
     if (items.length === 0) {
       listEl.innerHTML = `
@@ -1858,6 +1894,7 @@
 
         // Enter -> Submit answer or Go to Next
         if (e.key === 'Enter') {
+          e.preventDefault();
           if (state.sessionData.answers[state.currentQIndex] !== undefined) {
             goToNextQuestion();
           } else {
@@ -1881,6 +1918,19 @@
         // 'B' or 'b' -> Toggle Bookmark
         if ((e.key === 'b' || e.key === 'B') && !isInput) {
           toggleCurrentBookmark();
+          return;
+        }
+
+        // 'H' or 'h' -> Toggle Hint
+        if ((e.key === 'h' || e.key === 'H') && !isInput) {
+          const hb = document.getElementById('arena-hint-box');
+          if (hb) hb.style.display = hb.style.display === 'none' ? 'block' : 'none';
+          return;
+        }
+
+        // Escape -> Exit to Dashboard
+        if (e.key === 'Escape' && !state.sessionData.isPaused) {
+          navigateTo('dashboard');
           return;
         }
 

@@ -1,74 +1,69 @@
-# Maths30 — 30-Day Calculation Skill Training Web App
+# Maths30 — 30-Day Math & Calculation Skill Training Web App
 
-A responsive, client-side calculation training web application designed to systematically rebuild and accelerate mathematics and physics numerical calculation skills for **NEET** and **JEE** aspirants.
+A clean, minimalist, responsive client-side calculation training web app designed to systematically rebuild and accelerate basic mathematics and numerical calculation speed for **NEET** and **JEE** aspirants.
 
-![Maths30 Preview](https://img.shields.io/badge/Questions-450%20Curated-blue?style=for-the-badge)
+![Maths30 Questions](https://img.shields.io/badge/Questions-450%20Curated-blue?style=for-the-badge)
 ![Curriculum](https://img.shields.io/badge/Curriculum-30%20Days-green?style=for-the-badge)
-![Stack](https://img.shields.io/badge/Stack-HTML5%20%7C%20CSS3%20%7C%20JS%20(ES6)-orange?style=for-the-badge)
+![Sections](https://img.shields.io/badge/Daily%20Sections-5%20Uniform-orange?style=for-the-badge)
 ![Offline](https://img.shields.io/badge/Offline-100%25%20Client--Side-purple?style=for-the-badge)
 
 ---
 
-## 🌟 Highlights & Features
+## 🎯 Purpose & Philosophy
 
-1. **450 Predefined, High-Yield Questions**
-   - Exactly **30 progressive daily exercises**.
-   - Exactly **15 questions per exercise** (5 Mental Arithmetic, 5 Algebra, 5 Physics-Style Calculations).
-   - **Zero placeholders**: complete dataset built and validated.
-   - Real NEET & JEE formulas, physical constants ($h, c, e, \varepsilon_0, \mu_0, G, R, k_B$), and calculation shortcuts ($\pi^2 \approx 10$, $1240\text{ nm}\cdot\text{eV}$, $1/R \approx 91.2\text{ nm}$, $37^\circ/53^\circ$ 3-4-5 triangles).
+Physics and Chemistry numericals in NEET & JEE often consume excess time not because of physical formulas, but because of slow raw arithmetic: simplifying fractions, dividing by decimals like $2.5$ or $0.125$, estimating square roots like $\sqrt{2}, \sqrt{3}, \sqrt{10}$, handling powers of ten ($10^{-19}, 10^{-34}$), and solving linear/quadratic equations.
 
-2. **Difficulty Progression (6 Tiers)**
-   - **Exercises 1–5: Foundation** — Arithmetic fundamentals, fractions, decimals, percentage shortcuts, squares ($11^2$–$30^2$), simple formula substitution ($v = s/t, F = ma, W = Fs, P = W/t, V = IR$).
-   - **Exercises 6–10: Basic → Intermediate** — Mixed numbers, ratios, proportions, negative integers, difference of squares, $v = u + at$, $s = ut + \frac{1}{2}at^2$, $Q = mc\Delta T$, $E_k = \frac{1}{2}mv^2$, $P = V^2/R$.
-   - **Exercises 11–15: Intermediate** — Surds ($\sqrt{2}, \sqrt{3}, \sqrt{5}$), simultaneous equations, unit conversions ($\text{km/h} \leftrightarrow \text{m/s}$, $\text{g/cm}^3 \leftrightarrow \text{kg/m}^3$), fluid pressure ($P = \rho gh$), pendulum periods ($T = 2\pi\sqrt{L/g}$).
-   - **Exercises 16–20: Intermediate → Advanced** — Powers of ten ($10^{-19}, 10^{-34}$), NEET standard angles ($30^\circ, 45^\circ, 60^\circ, 37^\circ, 53^\circ$), resolving vectors, universal gravitation, and Coulomb's law.
-   - **Exercises 21–25: Advanced** — Capacitance ($C = \varepsilon_0 A/d$), photoelectric effect ($E = h\nu - \Phi$), thermal radiation ($P \propto T^4$), rotational dynamics ($I = \frac{1}{2}MR^2, \frac{2}{5}MR^2$), and time-pressured approximations.
-   - **Exercises 26–30: Exam-Level** — Authentic multi-step numericals: Bohr atom transitions ($E_n = -13.6/n^2\text{ eV}$), lens maker formula ($1/f = (\mu-1)(2/R)$), cyclotron frequency ($f = qB/2\pi m$), LCR resonance ($Z = \sqrt{R^2 + (X_L - X_C)^2}$), and radioactive decay half-lives.
+**Maths30 contains zero physics theory or physics formulas.** Instead, it trains raw mathematical reflexes across 30 progressive daily exercises so that numerical calculations in Physics, Chemistry, and Mathematics become second nature.
 
-3. **Question Stopwatch & Live Timers**
-   - Individual live stopwatch for every question ($00:07$).
-   - Stops on submit, records exact question time, overall exercise time, and average question speed.
-   - When revisiting answered questions, displays previously recorded time and answer.
+---
 
-4. **Pause & Resume System**
-   - Dedicated Pause button and `Spacebar` shortcut.
-   - Freezes stopwatch and question interaction with a frosted overlay.
-   - Seamlessly resumes without losing or inflating recorded time.
-   - Full session resumption if leaving midway through an exercise.
+## 🌟 Core Structure (Uniform 5 Sections / Day)
 
-5. **Bookmarks & Mistakes Review**
-   - **★ Bookmarks**: Star any question for later revision and jump directly to it from the Bookmarks tab.
-   - **❌ Mistakes Review**: Dedicated tab listing every incorrectly answered question with previous vs correct answers, step-by-step NEET/JEE shortcut solutions, and an interactive in-place "Try Again" solver.
+Every single one of the 30 daily exercises consists of the exact same 5 progressive sections:
 
-6. **Interactive Canvas Progress Graph**
-   - Plots actual completion time for every finished exercise.
-   - Dynamic metric toggles: Total Exercise Time, Average Question Time, Accuracy %, Questions Correct, and Section-Wise Comparison.
-   - High-DPI crisp rendering on all screens.
+| # | Section Name | Questions | Calculation Skills Trained |
+|---|--------------|-----------|----------------------------|
+| 1 | **Mental Arithmetic** | 3 | Multiplication shortcuts, splitting sums, complements to 100/1000, difference of squares |
+| 2 | **Fractions & Decimals** | 3 | Decimal reciprocals ($1/0.125 = 8$), percentage splits ($12.5\%, 37.5\%$), multi-term fraction simplification |
+| 3 | **Powers, Roots & Surds** | 3 | Squares ($11^2$ to $30^2$), surd values ($\sqrt{2} \approx 1.414, \sqrt{3} \approx 1.732, \sqrt{5} \approx 2.236$), rationalization |
+| 4 | **Algebra & Equations** | 3 | Linear equations, cross-multiplication, quadratic factorizations, system balancing |
+| 5 | **Scientific Notation & Estimation** | 3 | Powers of ten arithmetic ($10^{-26}/10^{-19}$), $\pi \approx 3.14$, $\pi^2 \approx 10$, ratio scaling |
 
-7. **Flexible Answer Input**
-   - Primarily numeric entry with robust evaluation: supports integers, decimals (`1.73`), fractions (`11/8`, `3/4`), scientific notation (`3e8`, `1.6*10^-19`, `3×10^8`), and standard unit tolerances.
-   - MCQ format for shortcuts and equivalent expressions.
+**Total:** 5 sections × 3 questions = **15 questions per exercise × 30 exercises = 450 questions total.**
 
-8. **Keyboard Accessibility**
-   - `Enter` ➔ Submit answer / Next question
-   - `←` (Left Arrow) ➔ Previous question
-   - `→` (Right Arrow) ➔ Next question
-   - `Space` ➔ Pause / Resume
-   - `1`, `2`, `3`, `4` ➔ Select MCQ option A, B, C, D
-   - `B` ➔ Toggle Bookmark
+---
+
+## ⚡ Minimalist, Low-Click, Keyboard-First UX
+
+- **Zero-Click Hands-On-Keyboard Flow**:
+  1. Open a Day. The answer input is **auto-focused** immediately.
+  2. Type your answer and press `Enter` to check.
+  3. Correct/Incorrect feedback and rapid shortcut explanation appear instantly.
+  4. Press `Enter` again to immediately advance to the next question with the input pre-focused and cleared.
+- **Stopwatch & Speed Tracking**:
+  - Live question stopwatch in monospace font (`00:08`).
+  - Total exercise timer and average calculation speed per question.
+- **Space to Pause**:
+  - Hit `Space` to freeze all timers with a minimalist modal overlay.
+- **Bookmarks & Mistakes Review**:
+  - Press `B` to star any tricky question for later quick revision.
+  - Missed questions are automatically logged to the **Mistakes Review** tab with interactive retry.
+- **Interactive HTML5 Canvas Chart**:
+  - Track speed improvements across the 30 days: total time, avg time/question, accuracy %, and 5-section comparison.
+- **100% Client-Side Privacy**:
+  - All progress, times, and bookmarks persist in `localStorage` without any external server or account needed.
 
 ---
 
 ## 🚀 How to Run
 
-No build tools, package managers, or servers required.
-
-Simply open `index.html` in any web browser:
+No build tools, npm packages, or backend required. Simply open `index.html` in any modern web browser:
 
 ```bash
 # In Linux / macOS:
 open index.html
-# Or with any local server if desired:
+
+# Or with python simple HTTP server:
 python3 -m http.server 8000
 ```
 
@@ -78,21 +73,26 @@ python3 -m http.server 8000
 
 ```
 .
-├── index.html       # Single-page application shell, semantic views, and modals
-├── style.css        # Responsive, modern dark/light styling and KaTeX optimizations
-├── questions.js     # Complete database of 30 exercises x 15 questions = 450 questions
-├── app.js           # Timers, answer evaluator, localStorage state, and Canvas graphs
-├── assemble.py      # Dataset compilation and validation suite
-├── data_tier1.py    # Questions for Exercises 1–5 (Foundation)
-├── data_tier2.py    # Questions for Exercises 6–10 (Basic → Intermediate)
-├── data_tier3.py    # Questions for Exercises 11–15 (Intermediate)
-├── data_tier4.py    # Questions for Exercises 16–20 (Intermediate → Advanced)
-├── data_tier5.py    # Questions for Exercises 21–25 (Advanced)
-├── data_tier6.py    # Questions for Exercises 26–30 (Exam-Level)
-└── README.md        # Documentation and curriculum overview
+├── index.html              # Minimalist single-page application shell
+├── style.css               # Clean dark/light theme, typography, and responsive styles
+├── questions.js            # Complete dataset: 30 days x 15 questions = 450 pure-math calculations
+├── app.js                  # Timers, answer evaluator, keyboard navigation, and Canvas chart
+├── math_days_1_10.py       # Modular question generator for Days 1–10
+├── math_days_11_20.py      # Modular question generator for Days 11–20
+├── math_days_21_30.py      # Modular question generator for Days 21–30
+├── assemble_pure_math.py   # Dataset validator & assembler into questions.js
+└── README.md               # Documentation and curriculum guide
 ```
 
 ---
 
-## 🔒 100% Local Storage Privacy
-All progress, scores, bookmarks, mistakes, and preferences are stored exclusively on your device using `window.localStorage`.
+## 🔒 Keyboard Shortcuts Reference
+
+| Key | Action |
+|-----|--------|
+| `Enter` | Submit answer / Advance to next question |
+| `Space` | Pause / Resume exercise timer |
+| `B` | Star / Unstar bookmark |
+| `H` | Toggle mental shortcut hint |
+| `←` / `→` | Previous / Next question |
+| `Esc` | Return to Dashboard |
