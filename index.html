@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Maths — 30-Day NEET/JEE Calculation Trainer</title>
+  <meta name="description" content="30-Day Progressive Math & Calculation Skill Training Web App for NEET/JEE. 450 curated questions in Mental Arithmetic, Algebra, and Physics.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧮</text></svg>">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for Beautiful LaTeX Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Global App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group" id="btn-brand">
+        <div class="brand-icon">🧮</div>
+        <div class="brand-text">
+          <h1 class="brand-title">Maths<span class="accent-text">30</span></h1>
+          <span class="brand-badge">NEET · JEE Trainer</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" aria-label="Main Navigation">
+        <button class="nav-btn active" data-view="dashboard" id="nav-dashboard">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Dashboard</span>
+        </button>
+        <button class="nav-btn" data-view="analytics" id="nav-analytics">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Analytics</span>
+        </button>
+        <button class="nav-btn" data-view="mistakes" id="nav-mistakes">
+          <span class="nav-icon">❌</span>
+          <span class="nav-label">Mistakes</span>
+          <span class="counter-badge" id="badge-mistakes">0</span>
+        </button>
+        <button class="nav-btn" data-view="bookmarks" id="nav-bookmarks">
+          <span class="nav-icon">★</span>
+          <span class="nav-label">Bookmarks</span>
+          <span class="counter-badge" id="badge-bookmarks">0</span>
+        </button>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="action-icon-btn" id="btn-theme-toggle" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <span class="theme-icon" id="theme-icon">🌙</span>
+        </button>
+        <button class="action-icon-btn" id="btn-settings-toggle" title="Settings & Options" aria-label="Settings">
+          <span>⚙️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Views Container -->
+  <main class="app-main">
+
+    <!-- ======================================================== -->
+    <!-- VIEW 1: DASHBOARD -->
+    <!-- ======================================================== -->
+    <section class="view active" id="view-dashboard">
+      <div class="dashboard-hero">
+        <div class="hero-content">
+          <div class="hero-badge">⚡ 30-Day Calculation Challenge</div>
+          <h2 class="hero-heading">Rebuild Your Math & Physics Speed</h2>
+          <p class="hero-subtext">450 high-yield questions covering Mental Arithmetic, Algebra, and Exam-Level Physics substitutions for NEET & JEE.</p>
+          
+          <!-- Resume Active Exercise Banner (Dynamic) -->
+          <div class="resume-banner" id="resume-banner" style="display: none;">
+            <div class="resume-info">
+              <span class="resume-icon">🔄</span>
+              <div>
+                <strong id="resume-title">Continue Exercise 07</strong>
+                <p id="resume-details">Question 6 of 15 in progress</p>
+              </div>
+            </div>
+            <div class="resume-actions">
+              <button class="btn btn-primary btn-sm" id="btn-resume-continue">Continue</button>
+              <button class="btn btn-secondary btn-sm" id="btn-resume-restart">Restart</button>
+            </div>
+          </div>
+
+          <!-- Primary Hero Progress -->
+          <div class="hero-progress-box">
+            <div class="progress-meta">
+              <span class="current-day-label" id="dash-current-day">Day 01 / 30</span>
+              <span class="progress-percent" id="dash-progress-percent">0% Completed</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="dash-progress-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Global Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper blue">🎯</div>
+          <div class="stat-data">
+            <span class="stat-value" id="stat-completed-exercises">0 / 30</span>
+            <span class="stat-label">Exercises Finished</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrapper green">⚡</div>
+          <div class="stat-data">
+            <span class="stat-value" id="stat-solved-questions">0 / 450</span>
+            <span class="stat-label">Questions Solved</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrapper purple">🎯</div>
+          <div class="stat-data">
+            <span class="stat-value" id="stat-overall-accuracy">0%</span>
+            <span class="stat-label">Overall Accuracy</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrapper orange">⏱️</div>
+          <div class="stat-data">
+            <span class="stat-value" id="stat-avg-time">-- s</span>
+            <span class="stat-label">Avg Question Time</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrapper teal">⏳</div>
+          <div class="stat-data">
+            <span class="stat-value" id="stat-total-practice">0m</span>
+            <span class="stat-label">Total Practice Time</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise Cards Section -->
+      <div class="section-header-row">
+        <div>
+          <h3 class="section-title">Daily Training Exercises</h3>
+          <p class="section-desc">Each exercise has 15 curated questions: 5 Mental, 5 Algebra, 5 Physics.</p>
+        </div>
+        <div class="tier-filter-chips" id="tier-filter-chips">
+          <button class="chip active" data-filter="all">All (30)</button>
+          <button class="chip" data-filter="Foundation">Foundation (1-5)</button>
+          <button class="chip" data-filter="Basic → Intermediate">Basic (6-10)</button>
+          <button class="chip" data-filter="Intermediate">Intermediate (11-15)</button>
+          <button class="chip" data-filter="Intermediate → Advanced">Upper-Int (16-20)</button>
+          <button class="chip" data-filter="Advanced">Advanced (21-25)</button>
+          <button class="chip" data-filter="Exam-Level">Exam-Level (26-30)</button>
+        </div>
+      </div>
+
+      <!-- Exercise Cards Grid (Rendered by JS) -->
+      <div class="exercises-grid" id="exercises-cards-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 2: ACTIVE EXERCISE ARENA -->
+    <!-- ======================================================== -->
+    <section class="view" id="view-exercise">
+      <!-- Arena Sticky Header -->
+      <div class="arena-header">
+        <div class="arena-header-left">
+          <button class="btn-icon" id="btn-arena-exit" title="Exit to Dashboard" aria-label="Exit">
+            ← Exit
+          </button>
+          <div class="arena-exercise-meta">
+            <span class="arena-ex-badge" id="arena-ex-number">Exercise 01</span>
+            <span class="arena-ex-title" id="arena-ex-title">Foundation</span>
+          </div>
+        </div>
+
+        <div class="arena-header-center">
+          <!-- Live Question Stopwatch -->
+          <div class="stopwatch-container" title="Question Time">
+            <span class="stopwatch-icon">⏱️</span>
+            <span class="stopwatch-digits" id="timer-question">00:00</span>
+          </div>
+          <!-- Overall Exercise Timer -->
+          <div class="exercise-timer-pill" title="Total Exercise Time">
+            <span>Total:</span>
+            <span id="timer-exercise">00:00</span>
+          </div>
+        </div>
+
+        <div class="arena-header-right">
+          <!-- Bookmark Button -->
+          <button class="btn-arena-action" id="btn-arena-bookmark" title="Bookmark Question (Hotkey: B)">
+            <span class="star-icon" id="arena-star-icon">☆</span>
+            <span id="arena-bookmark-label">Bookmark</span>
+          </button>
+          <!-- Pause Button -->
+          <button class="btn-arena-action btn-pause" id="btn-arena-pause" title="Pause Exercise (Hotkey: Space)">
+            <span>⏸</span>
+            <span>Pause</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section Indicator & Question Progress Bar -->
+      <div class="arena-progress-bar">
+        <div class="section-tag-row">
+          <span class="section-pill" id="arena-section-pill">Section 1 — Mental Arithmetic</span>
+          <span class="q-counter-text" id="arena-q-counter">Question 1 of 15</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="arena-progress-fill" style="width: 6.66%;"></div>
+        </div>
+      </div>
+
+      <!-- Question Palette / Stepper (1 to 15 pills) -->
+      <div class="palette-container">
+        <div class="palette-scroll" id="arena-palette">
+          <!-- Generated pills 1..15 -->
+        </div>
+      </div>
+
+      <!-- Question Card Body -->
+      <div class="arena-card">
+        <!-- Question Prompt Area -->
+        <div class="question-box">
+          <div class="q-header-meta">
+            <span class="q-type-label" id="arena-q-type-badge">Numeric Entry</span>
+            <button class="btn-link-sm" id="btn-toggle-hint">💡 Hint</button>
+          </div>
+          
+          <div class="hint-box" id="arena-hint-box" style="display: none;">
+            <!-- Hint text -->
+          </div>
+
+          <div class="question-text math-content" id="arena-question-text">
+            <!-- Math question text with KaTeX -->
+          </div>
+        </div>
+
+        <!-- Answer Submission Area -->
+        <div class="answer-interactive-area" id="arena-answer-area">
+          <!-- Dynamically switches between Numeric Form and MCQ Options Form -->
+          
+          <!-- Numeric Entry Container -->
+          <form class="numeric-form" id="form-numeric" onsubmit="return false;">
+            <div class="numeric-input-group">
+              <input type="text" id="input-numeric-answer" class="numeric-input" placeholder="Enter answer (e.g. 102 or 3/4 or 1.5e-3)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+              <span class="unit-addon" id="arena-unit-addon"></span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-submit" id="btn-submit-numeric">
+              Submit Answer <span class="kbd-hint">↵ Enter</span>
+            </button>
+          </form>
+
+          <!-- MCQ Container -->
+          <div class="mcq-container" id="container-mcq" style="display: none;">
+            <div class="mcq-options-grid" id="arena-mcq-options">
+              <!-- 4 Options dynamically rendered -->
+            </div>
+            <button class="btn btn-primary btn-submit" id="btn-submit-mcq" disabled>
+              Submit Answer <span class="kbd-hint">↵ Enter</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Answer Review & Step-by-Step Explanation Banner (Shown when question is answered) -->
+        <div class="explanation-box" id="arena-explanation-box" style="display: none;">
+          <div class="feedback-banner" id="arena-feedback-banner">
+            <!-- Correct / Incorrect message -->
+          </div>
+          <div class="solution-details">
+            <div class="solution-answers-row">
+              <div class="ans-block user-ans">
+                <span class="ans-label">Your Answer:</span>
+                <span class="ans-val math-content" id="arena-sol-user-ans">--</span>
+              </div>
+              <div class="ans-block correct-ans">
+                <span class="ans-label">Correct Answer:</span>
+                <span class="ans-val math-content" id="arena-sol-correct-ans">--</span>
+              </div>
+              <div class="ans-block time-ans">
+                <span class="ans-label">Time Taken:</span>
+                <span class="ans-val" id="arena-sol-time">-- s</span>
+              </div>
+            </div>
+            <div class="step-by-step-box">
+              <div class="step-header">⚡ Rapid NEET/JEE Calculation Method:</div>
+              <div class="step-content math-content" id="arena-sol-explanation"></div>
+            </div>
+            <div class="solution-actions">
+              <button class="btn btn-secondary btn-sm" id="btn-retry-question">🔄 Retry Question</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Footer -->
+        <div class="arena-footer">
+          <button class="btn btn-secondary" id="btn-prev-q">
+            ← Previous <span class="kbd-hint">Left Arrow</span>
+          </button>
+          <div class="footer-center-note" id="arena-footer-note">
+            Press <strong>Enter</strong> to submit
+          </div>
+          <button class="btn btn-primary" id="btn-next-q">
+            Next → <span class="kbd-hint">Right Arrow</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 3: EXERCISE COMPLETION / RESULTS -->
+    <!-- ======================================================== -->
+    <section class="view" id="view-results">
+      <div class="results-container">
+        <!-- Results Hero Card -->
+        <div class="results-hero">
+          <div class="results-badge">🎉 Exercise Complete!</div>
+          <h2 class="results-title" id="results-ex-title">Exercise 01 Complete</h2>
+          <p class="results-sub" id="results-ex-date">Completed on Sep 17, 2026</p>
+
+          <div class="results-score-row">
+            <div class="score-circle">
+              <span class="score-num" id="results-score">14 / 15</span>
+              <span class="score-pct" id="results-accuracy">93.3% Accuracy</span>
+            </div>
+            <div class="score-quick-metrics">
+              <div class="metric-pill">
+                <span class="metric-label">Total Time</span>
+                <span class="metric-val" id="results-total-time">11:42</span>
+              </div>
+              <div class="metric-pill">
+                <span class="metric-label">Avg / Question</span>
+                <span class="metric-val" id="results-avg-time">46.8s</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Breakdown Row -->
+        <div class="results-section-breakdown">
+          <h3 class="sub-heading">Section Performance</h3>
+          <div class="breakdown-grid">
+            <div class="breakdown-card">
+              <span class="sec-name">🧠 Mental Arithmetic</span>
+              <span class="sec-score" id="results-sec-mental">5 / 5</span>
+              <div class="mini-progress"><div class="mini-bar" id="bar-sec-mental" style="width: 100%;"></div></div>
+            </div>
+            <div class="breakdown-card">
+              <span class="sec-name">📐 Algebra</span>
+              <span class="sec-score" id="results-sec-algebra">5 / 5</span>
+              <div class="mini-progress"><div class="mini-bar" id="bar-sec-algebra" style="width: 100%;"></div></div>
+            </div>
+            <div class="breakdown-card">
+              <span class="sec-name">⚡ Physics Calculations</span>
+              <span class="sec-score" id="results-sec-physics">4 / 5</span>
+              <div class="mini-progress"><div class="mini-bar" id="bar-sec-physics" style="width: 80%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Speed & Insights Cards -->
+        <div class="insights-grid">
+          <div class="insight-card fast">
+            <div class="insight-icon">⚡</div>
+            <div class="insight-info">
+              <span class="insight-label">Fastest Question</span>
+              <strong class="insight-value" id="results-fastest-q">Question 1 (4.2s)</strong>
+            </div>
+          </div>
+          <div class="insight-card slow">
+            <div class="insight-icon">🐢</div>
+            <div class="insight-info">
+              <span class="insight-label">Slowest Question</span>
+              <strong class="insight-value" id="results-slowest-q">Question 14 (68.1s)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mistakes in this exercise -->
+        <div class="results-review-card" id="results-mistakes-panel">
+          <div class="panel-header">
+            <h4 class="panel-title">Questions to Review (<span id="results-mistakes-count">0</span>)</h4>
+          </div>
+          <div class="review-items-list" id="results-mistakes-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Bookmarks in this exercise -->
+        <div class="results-review-card" id="results-bookmarks-panel">
+          <div class="panel-header">
+            <h4 class="panel-title">Bookmarked Questions (<span id="results-bookmarks-count">0</span>)</h4>
+          </div>
+          <div class="review-items-list" id="results-bookmarks-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Next Step Primary Actions -->
+        <div class="results-actions-bar">
+          <button class="btn btn-secondary" id="btn-results-review-mistakes">Review All Mistakes</button>
+          <button class="btn btn-secondary" id="btn-results-dashboard">Dashboard</button>
+          <button class="btn btn-primary btn-lg" id="btn-results-next-ex">Start Next Exercise →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 4: PROGRESS ANALYTICS & GRAPH -->
+    <!-- ======================================================== -->
+    <section class="view" id="view-analytics">
+      <div class="analytics-container">
+        <div class="analytics-header">
+          <div>
+            <h2 class="section-title">Performance & Speed Progression</h2>
+            <p class="section-desc">Track your speed and accuracy trajectory across the 30-day challenge.</p>
+          </div>
+          <!-- Graph Metric Toggles -->
+          <div class="metric-toggles" id="graph-metric-toggles">
+            <button class="toggle-btn active" data-metric="totalTime">Total Exercise Time</button>
+            <button class="toggle-btn" data-metric="avgTime">Avg Question Time</button>
+            <button class="toggle-btn" data-metric="accuracy">Accuracy %</button>
+            <button class="toggle-btn" data-metric="score">Correct Answers</button>
+            <button class="toggle-btn" data-metric="sections">Section Comparison</button>
+          </div>
+        </div>
+
+        <!-- Graph Card with HTML5 Canvas -->
+        <div class="graph-card">
+          <div class="graph-meta-header">
+            <h3 class="graph-chart-title" id="graph-title">Exercise Completion Time (Minutes)</h3>
+            <span class="graph-hint-badge" id="graph-subtitle">X: Day 1 → Day 30 | Y: Time</span>
+          </div>
+
+          <div class="chart-wrapper">
+            <canvas id="canvas-progress-chart" width="900" height="380"></canvas>
+            <div class="empty-chart-overlay" id="empty-chart-overlay" style="display: none;">
+              <span class="empty-icon">📊</span>
+              <p>No exercises completed yet.</p>
+              <button class="btn btn-primary btn-sm" onclick="App.navigateTo('dashboard')">Start Day 01</button>
+            </div>
+          </div>
+
+          <div class="graph-legend" id="graph-legend">
+            <!-- Dynamic legend items -->
+          </div>
+        </div>
+
+        <!-- Insights Summary Table -->
+        <div class="analytics-summary-grid">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper blue">🏆</div>
+            <div class="stat-data">
+              <span class="stat-value" id="analytics-best-score">--</span>
+              <span class="stat-label">Best Single Day Score</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper green">⚡</div>
+            <div class="stat-data">
+              <span class="stat-value" id="analytics-fastest-ex">--</span>
+              <span class="stat-label">Fastest Exercise Time</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper orange">📈</div>
+            <div class="stat-data">
+              <span class="stat-value" id="analytics-time-saved">--%</span>
+              <span class="stat-label">Speed Improvement</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 5: MISTAKES REVIEW -->
+    <!-- ======================================================== -->
+    <section class="view" id="view-mistakes">
+      <div class="page-container">
+        <div class="page-header-row">
+          <div>
+            <h2 class="section-title">Mistakes Review</h2>
+            <p class="section-desc">Revisit questions you answered incorrectly. Practice them until they become second nature.</p>
+          </div>
+          <div class="filter-pills" id="mistakes-filter-pills">
+            <button class="chip active" data-sec="all">All (<span id="count-mistakes-all">0</span>)</button>
+            <button class="chip" data-sec="mental">Mental (<span id="count-mistakes-mental">0</span>)</button>
+            <button class="chip" data-sec="algebra">Algebra (<span id="count-mistakes-algebra">0</span>)</button>
+            <button class="chip" data-sec="physics">Physics (<span id="count-mistakes-physics">0</span>)</button>
+          </div>
+        </div>
+
+        <!-- Mistakes List Container -->
+        <div class="items-list" id="mistakes-cards-list">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 6: BOOKMARKS -->
+    <!-- ======================================================== -->
+    <section class="view" id="view-bookmarks">
+      <div class="page-container">
+        <div class="page-header-row">
+          <div>
+            <h2 class="section-title">Saved Bookmarks</h2>
+            <p class="section-desc">Key calculation shortcuts, tricky algebra, and high-yield physics substitutions you starred.</p>
+          </div>
+          <span class="badge-pill" id="bookmarks-total-badge">0 Bookmarked</span>
+        </div>
+
+        <!-- Bookmarks List Container -->
+        <div class="items-list" id="bookmarks-cards-list">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: PAUSE OVERLAY -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="modal-pause" style="display: none;">
+    <div class="modal-card pause-modal">
+      <div class="pause-icon-big">⏸️</div>
+      <h2 class="modal-title">EXERCISE PAUSED</h2>
+      <p class="modal-text">All timers are frozen. Take a quick breath before returning to high-speed calculation.</p>
+      
+      <div class="pause-time-box">
+        <span>Question Time Frozen At:</span>
+        <strong id="pause-frozen-time">00:00</strong>
+      </div>
+
+      <div class="modal-actions-row">
+        <button class="btn btn-primary btn-lg" id="btn-pause-resume">
+          ▶ Resume Exercise <span class="kbd-hint">Space</span>
+        </button>
+        <button class="btn btn-secondary" id="btn-pause-exit">
+          Exit to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: SETTINGS & OPTIONS -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="modal-settings" style="display: none;">
+    <div class="modal-card settings-modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Settings & Training Options</h3>
+        <button class="btn-close" id="btn-close-settings">✕</button>
+      </div>
+      
+      <div class="settings-list">
+        <div class="setting-item">
+          <div>
+            <strong>Theme Appearance</strong>
+            <p>Switch between modern dark mode and high-contrast light mode.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btn-settings-theme">Switch Theme</button>
+        </div>
+
+        <div class="setting-item">
+          <div>
+            <strong>Unlock All 30 Exercises</strong>
+            <p>Freely jump to any day for immediate practice without completing prior days.</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-unlock-all">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item danger-zone">
+          <div>
+            <strong>Reset Progress</strong>
+            <p>Clears completed exercises, recorded times, mistakes and bookmarks from localStorage.</p>
+          </div>
+          <button class="btn btn-danger btn-sm" id="btn-reset-all-data">Reset All Data</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Application Scripts -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
